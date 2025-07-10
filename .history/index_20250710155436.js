@@ -8,11 +8,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-const GROUP_ID = 34259681; // Seu grupo Roblox
+const GROUP_ID = 34259681; // Coloque o ID do seu grupo aqui
 
 app.post('/get-rank', async (req, res) => {
   const userId = req.body.userId;
-  if (!userId) return res.status(400).json({ error: 'userId é obrigatório' });
+  if (!userId) {
+    return res.status(400).json({ error: 'userId é obrigatório' });
+  }
 
   try {
     const response = await axios.get(`https://groups.roblox.com/v2/users/${userId}/groups/roles`);
@@ -20,7 +22,7 @@ app.post('/get-rank', async (req, res) => {
 
     console.log(`Grupos do usuário ${userId}:`, groups);
 
-    const groupData = groups.find(g => g.group.id === GROUP_ID);
+    const groupData = groups.find(group => group.id === GROUP_ID);
 
     if (!groupData) {
       return res.json({ inGroup: false });
